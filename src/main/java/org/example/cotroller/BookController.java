@@ -1,22 +1,23 @@
 package org.example.cotroller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+
 import org.example.dao.entity.Book;
 import org.example.service.BookService;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
 @RequiredArgsConstructor
 public class BookController {
 
@@ -31,7 +32,7 @@ public class BookController {
     public ModelAndView infoAllBook() {
         List<Book> allBooks = bookService.getBooksAll();
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/infoAllBook");
+        modelAndView.setViewName("infoAllBook");
         modelAndView.addObject("books",allBooks);
         return modelAndView;
     }
@@ -39,21 +40,21 @@ public class BookController {
     @GetMapping("/home/infoBook")
     public ModelAndView infoBook(Model model) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/infoBook");
-        modelAndView.addObject("book",model.getAttribute("books"));
+        modelAndView.setViewName("infoBook");
+        modelAndView.addObject("bookInfo",model.getAttribute("bookInfo"));
         return modelAndView;
     }
 
     @GetMapping("/home/search")
     public ModelAndView searchBook(Book bookEntity) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/search");
-        modelAndView.addObject("book", bookEntity);
+        modelAndView.setViewName("search");
+        modelAndView.addObject("bookInfo", bookEntity);
         return modelAndView;
     }
 
     @PostMapping("/home/search")
-    public ModelAndView search(@Valid @ModelAttribute("bookEntity") Book bookEntity, BindingResult result,
+    public ModelAndView search(@Valid @ModelAttribute("books") Book bookEntity, BindingResult result,
                                Model model, RedirectAttributes attributes) {
         if (result.hasFieldErrors("title")){
             return searchBook(bookEntity);
@@ -63,8 +64,8 @@ public class BookController {
         if (bookService.findBookTitle(bookEntity.getTitle()).isEmpty()) {
             return error("BOOK_NOT_FOUND");
         }
-        attributes.addFlashAttribute("books", book);
-        model.addAttribute("books", book);
+        attributes.addFlashAttribute("bookInfo", book);
+        model.addAttribute("bookInfo", book);
         return infoBook(model);
     }
 
@@ -77,13 +78,6 @@ public class BookController {
         return modelAndView;
     }
 
-    @GetMapping("/home/error")
-    public ModelAndView AccessDenied(User user) {
-        ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("error");
-        modelAndView.addObject("user" , user);
-        return modelAndView;
-    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/home/delete")
     public ModelAndView deleteBook(Book bookEntity) {
@@ -120,7 +114,6 @@ public class BookController {
         return modelAndView;
     }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @GetMapping("/home/createOrUpdate")
@@ -133,7 +126,7 @@ public class BookController {
     @GetMapping("/home/createOrUpdateResult")
     public ModelAndView create(Model model) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/createOrUpdateResult");
+        modelAndView.setViewName("createOrUpdateResult");
         modelAndView.addObject("result", model.getAttribute("books"));
         return modelAndView;
     }
@@ -149,5 +142,33 @@ public class BookController {
         attributes.addFlashAttribute("books", bookEntity);
         model.addAttribute("books", bookEntity);
         return create(model);
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @GetMapping(value = "/home/category")
+    public ModelAndView categoryJson(Book book) {
+        ModelAndView modelAndView= new ModelAndView();
+        modelAndView.setViewName("category");
+        modelAndView.addObject("category", book);
+        return modelAndView;
+    }
+
+    @PostMapping(value = "/home/category", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Book> categoryJsonPrint(@Valid @ModelAttribute("bookCategory")Book bookEntity, BindingResult bindingResult,
+                                        Model model, RedirectAttributes attributes, @RequestParam String category) throws IOException {
+
+        System.out.println("category=" + category);
+        List<Book> bookCategory = bookService.findBookCategory(category);
+        System.out.println("Book category=" + bookCategory);
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("BookListCategory.json");
+        mapper.writeValue(file, bookCategory);
+        return  bookCategory;
+    }
+    @GetMapping(value = "/home/categoryString", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Book> categoryJsonResult(Model model, @RequestParam(required = false, value = "category") String category) {
+        System.out.println("categoryJsonResult category=" + category);
+        List<Book> result = bookService.findBookCategory(category);
+        System.out.println(category);
+        return result;
     }
 }

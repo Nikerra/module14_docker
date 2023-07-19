@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class BookService {
 
     private final BookRepo repository;
@@ -17,8 +18,19 @@ public class BookService {
         this.book = book;
     }
 
+    public Book save(Book book) {
+        return repository.save(book);
+    }
 
-    public Book createOrUpdate(String title, String author, String lang, String category, boolean active){
+    public List<Book> findBookCategory(String category) {
+        return repository.findByCategoryIgnoreCaseAndIsActiveTrue(category);
+    }
+
+    public List<Book> findBookCategoryIgnored(String category) {
+        return repository.findByCategory(category);
+    }
+
+    public Book createOrUpdate(String title, String author, String lang, String category, boolean active) {
         book.setTitle(title);
         book.setAuthor(author);
         book.setLanguage(lang);

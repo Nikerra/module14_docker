@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Category</title>
+</head>
+<body>
+<h3>Find book category:</h3>
+<form th:method="POST" th:action="@{/home/category}" th:object="${category}">
+  <label for="category">Enter category book</label>
+  <input type="text" th:field="*{category}" id="category">
+  <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">category error</div>
+  <br>
+  <p><input type="submit" value="Find"></p>
+  <hr>
+  <a href="http://localhost:8081/home">Back</a>
+</form>
+</body>
+</html>
