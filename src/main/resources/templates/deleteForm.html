@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>delete book</title>
+</head>
+<body>
+<h3>Delete book for id:</h3>
+    <form th:method="POST" th:action="@{/home/delete}" th:object="${bookEntity}">
+        <label for="id">Delete book on id:</label>
+        <input type="text" th:field="*{id}" id="id">
+        <div style="color: red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">ID error</div>
+        <br>
+        <p><input type="submit" value="Delete"></p>
+        <hr>
+    </form>
+<a href="http://localhost:8081/home">Back</a>
+</body>
+</html>

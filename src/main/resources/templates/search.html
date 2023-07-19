@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns = "http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Books</title>
+</head>
+<body>
+<h3>Search book for title:</h3>
+  <form th:method="POST" th:action="@{/home/search}" th:object="${bookEntity}">
+    <label for="title">Search for title book:</label>
+    <input type="text" th:field="*{title}" id="title">
+    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">ID error</div>
+    <br>
+    <p><input type="submit" value="Search"></p>
+    <hr>
+    <a href="http://localhost:8081/home">Back</a>
+  </form>
+</body>
+</html>

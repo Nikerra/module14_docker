@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns = "http://www.w3.org/1999/xhtml"
+      xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>InfoAllBook</title>
+</head>
+<body>
+<h3>Information on all books</h3>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>TITLE</th>
+        <th>AUTHOR</th>
+        <th>LANGUAGE</th>
+        <th>CATEGORY</th>
+        <th>ACTIVE</th>
+    </tr>
+    <tr th:each="book,iterStat : ${books}" th:class="${iterStat.odd}? 'odd'">
+        <td th:text="${book.id}">Id</td>
+        <td th:text="${book.title}">Title</td>
+        <td th:text="${book.author}">Athor</td>
+        <td th:text="${book.language}">language</td>
+        <td th:text="${book.category}">language</td>
+        <td th:text="${book.active}">language</td>
+    </tr>
+</table>
+<a href="http://localhost:8081/home">Back</a>
+</body>
+</html>

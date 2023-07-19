@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Books</title>
+</head>
+<body>
+<h3>Create or update book:</h3>
+<form th:method="POST" th:action="@{/home/createOrUpdate}" th:object="${bookEntity}">
+    <label for="title">Enter title book</label>
+    <input type="text" th:field="*{title}" id="title">
+    <div style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title error</div>
+    <br>
+    <label for="author">Enter author book</label>
+    <input type="text" th:field="*{author}" id="author">
+    <div style="color: red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">author error</div>
+    <br>
+    <label for="language">Enter language book</label>
+    <input type="text" th:field="*{language}" id="language">
+    <div style="color: red" th:if="${#fields.hasErrors('language')}" th:errors="*{language}">language error</div>
+    <br>
+    <label for="category">Enter category book</label>
+    <input type="text" th:field="*{category}" id="category">
+    <div style="color: red" th:if="${#fields.hasErrors('category')}" th:errors="*{category}">category error</div>
+    <br>
+    <label for="active">Enter active book</label>
+    <input type="text" th:field="*{active}" id="active">
+    <div style="color: red" th:if="${#fields.hasErrors('active')}" th:errors="*{active}">active error</div>
+    <br>
+    <p><input type="submit" value="Create/Update"></p>
+    <hr>
+    <a href="http://localhost:8081/home">Back</a>
+</form>
+</body>
+</html>

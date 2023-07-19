@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorization</title>
+</head>
+<body>
+<H2>Page authorization</H2>
+    <form th:method="POST" th:action="@{/home/login}" th:object="${user}">
+        <label for="login">Enter email:</label>
+        <input type="text" th:field="*{email}" placeholder="Email or username" id="login">
+        <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">ID error</div>
+        <br>
+        <label for="password">Enter password:</label>
+        <input type="password" th:field="*{password}" placeholder="Password" id="password">
+        <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">ID error</div>
+        <br>
+        <p><input type="submit" value="Login"></p>
+        <hr>
+        <a href="http://localhost:8081/home">Back</a>
+    </form>
+</body>
+</html>
