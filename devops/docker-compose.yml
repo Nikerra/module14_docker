@@ -7,14 +7,14 @@ services:
     environment:
       POSTGRES_PASSWORD: hello
     ports:
-      - "9000:5432"
+      - '9000:5432'
 
   book-service:
     image:
-      javareboot_module14_image_20
+      javareboot_module14_20
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
     ports:
-      - "8081:8081"
+      - '8081:8081'
     depends_on:
       - db

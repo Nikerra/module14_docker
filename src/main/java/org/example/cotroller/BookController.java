@@ -2,11 +2,9 @@ package org.example.cotroller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
+
 import org.example.dao.entity.Book;
 import org.example.service.BookService;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@Controller
-@RequestMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RestController
+//@RequestMapping(value = "/", produces = MediaType.TEXT_HTML)
 @RequiredArgsConstructor
 public class BookController {
 
@@ -31,7 +29,7 @@ public class BookController {
     public ModelAndView infoAllBook() {
         List<Book> allBooks = bookService.getBooksAll();
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/infoAllBook");
+        modelAndView.setViewName("infoAllBook");
         modelAndView.addObject("books",allBooks);
         return modelAndView;
     }
@@ -39,7 +37,7 @@ public class BookController {
     @GetMapping("/home/infoBook")
     public ModelAndView infoBook(Model model) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/infoBook");
+        modelAndView.setViewName("infoBook");
         modelAndView.addObject("book",model.getAttribute("books"));
         return modelAndView;
     }
@@ -47,7 +45,7 @@ public class BookController {
     @GetMapping("/home/search")
     public ModelAndView searchBook(Book bookEntity) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/search");
+        modelAndView.setViewName("search");
         modelAndView.addObject("book", bookEntity);
         return modelAndView;
     }
@@ -77,13 +75,13 @@ public class BookController {
         return modelAndView;
     }
 
-    @GetMapping("/home/error")
-    public ModelAndView AccessDenied(User user) {
-        ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("error");
-        modelAndView.addObject("user" , user);
-        return modelAndView;
-    }
+//    @GetMapping("/home/error")
+//    public ModelAndView AccessDenied(User user) {
+//        ModelAndView modelAndView= new ModelAndView();
+//        modelAndView.setViewName("error");
+//        modelAndView.addObject("user" , user);
+//        return modelAndView;
+//    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @GetMapping("/home/delete")
     public ModelAndView deleteBook(Book bookEntity) {
@@ -133,7 +131,7 @@ public class BookController {
     @GetMapping("/home/createOrUpdateResult")
     public ModelAndView create(Model model) {
         ModelAndView modelAndView= new ModelAndView();
-        modelAndView.setViewName("/createOrUpdateResult");
+        modelAndView.setViewName("createOrUpdateResult");
         modelAndView.addObject("result", model.getAttribute("books"));
         return modelAndView;
     }
